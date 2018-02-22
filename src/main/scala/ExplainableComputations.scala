@@ -15,6 +15,10 @@ object ComplexImplicits {
   implicit def Int2Number(value : Int) = new NumericExpression(value)
 }
 
+object MathUtils {
+  def roundAt(p: Int)(n: Double): Double = { val s = math pow (10, p); (math round n * s) / s }
+}
+
 class NumericExpression(result:Double,
                         leftOperand: Option[NumericExpression]=None,
                         operation: Option[String]=None,
@@ -29,7 +33,6 @@ class NumericExpression(result:Double,
   def getLeftOperand = leftOperand
   def getOperation = operation
   def getRightOperand = rightOperand
-  private def roundAt(p: Int)(n: Double): Double = { val s = math pow (10, p); (math round n * s) / s }
 
   private def applyOperation(that: NumericExpression, op: String) = {
     val result: Double = evaluate(getResult, op, that.getResult)
@@ -45,7 +48,7 @@ class NumericExpression(result:Double,
       case "+" => a+b
       case "-" => a-b
       case "/" => a/b
-      case "round" => roundAt(b.toInt)(a)
+      case "round" => MathUtils.roundAt(b.toInt)(a)
       case _ => throw new IllegalArgumentException("Unknown operation: " + op)
     }
   }
