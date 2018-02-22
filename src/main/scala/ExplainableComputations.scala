@@ -3,6 +3,13 @@ import ComplexImplicits._
 
 import scala.language.implicitConversions
 
+/**
+  * Global settings for NumericExpressions
+  * You can disable explanation and keep just the result of computations
+  */
+object GlobalExplanationSettings {
+  var explain = true
+}
 object ComplexImplicits {
   implicit def Double2Number(value : Double) = new NumericExpression(value)
   implicit def Int2Number(value : Int) = new NumericExpression(value)
@@ -25,7 +32,12 @@ class NumericExpression(result:Double,
   private def roundAt(p: Int)(n: Double): Double = { val s = math pow (10, p); (math round n * s) / s }
 
   private def applyOperation(that: NumericExpression, op: String) = {
-    new NumericExpression(evaluate(getResult,op,that.getResult),Some(this), Some(op),Some(that))
+    val result: Double = evaluate(getResult, op, that.getResult)
+    if (GlobalExplanationSettings.explain) {
+      new NumericExpression(result,Some(this), Some(op),Some(that))
+    } else {
+      Number(result)
+    }
   }
   private def evaluate(a: Double, op: String, b: Double): Double = {
     op match {
