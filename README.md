@@ -18,8 +18,14 @@ EURAUD=Rate(bid=(1.5705=(1.5704826181077296=1.2333 / (0.7853=0.7843 + (0.001=0.0
 ## Example 3:
 ```
 EURUSD=Rate(bid=1.2333, offer=1.2338)
-AUDUSD=Rate(bid=(0.7833=0.7843 - (0.001=0.002 * 0.5)), offer=(0.7853=0.7843 + (0.001=0.002 * 0.5)))=SpreadedRate(mid=0.7843, spread=0.002)
-EURAUD=Rate
+AUDUSD=Rate
+	(bid=
+		(0.7833=0.7843 - 
+			(0.001=0.002 * 0.5)), offer=
+		(0.7853=0.7843 + 
+			(0.001=0.002 * 0.5)))=SpreadedRate
+	(mid=0.7843, spread=0.002)
+EURAUD with spread widened by 0.2=Rate
 	(bid=
 		(1.4705=
 			(1.4704826181077295=
@@ -59,8 +65,6 @@ EURAUD=Rate
 							(1.5704826181077296=1.2333 / 
 								(0.7853=0.7843 + 
 									(0.001=0.002 * 0.5)))) + 0.2) * 0.5)) round 4.0))
-
-
 ```
 
 ## Disadvantages

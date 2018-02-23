@@ -34,13 +34,13 @@ roundedPie=(5.86=(5.859874482048838=3.141592653589793 + 2.718281828459045) round
     GlobalExplanationSettings.explain=true
     val EURUSD = new Rate(EURUSD_BID, EURUSD_OFFER)
     val AUDUSD = new SpreadedRate(AUDUSD_MID, AUDUSD_SPREAD)
-    println("EURUSD=" + EURUSD)
-
-    println("AUDUSD=" + AUDUSD)
     val EURAUD = EURUSD.cross(AUDUSD)
     val spreadWidenedEURAUD = new SpreadedRate(EURAUD.calculateMid,EURAUD.spread + EXTRA_SPREAD)
     val roundedEURAUD: Rate = spreadWidenedEURAUD.round(4)
-    println("EURAUD=" + roundedEURAUD.prettyPrint)
+
+    println("EURUSD=" + EURUSD)
+    println("AUDUSD=" + AUDUSD.prettyPrint)
+    println("EURAUD with spread widened by " + EXTRA_SPREAD + "=" + roundedEURAUD.prettyPrint)
     assert(EXPECTED_BID==roundedEURAUD.getBid.getResult)
     assert(EXPECTED_OFFER==roundedEURAUD.getOffer.getResult)
     /*
