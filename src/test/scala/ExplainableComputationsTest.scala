@@ -32,15 +32,26 @@ roundedPie=(5.86=(5.859874482048838=3.141592653589793 + 2.718281828459045) round
   @Test
   def testEURAUD() {
     GlobalExplanationSettings.explain=true
-    val EURUSD = new Rate(EURUSD_BID, EURUSD_OFFER)
-    val AUDUSD = new SpreadedRate(AUDUSD_MID, AUDUSD_SPREAD)
-    val EURAUD = EURUSD.cross(AUDUSD)
-    val spreadWidenedEURAUD = new SpreadedRate(EURAUD.calculateMid,EURAUD.spread + EXTRA_SPREAD)
-    val roundedEURAUD: Rate = spreadWidenedEURAUD.round(4)
+    val EURUSD_SPOT = new Rate(EURUSD_BID, EURUSD_OFFER)
+    val AUDUSD_SPOT = new SpreadedRate(AUDUSD_MID, AUDUSD_SPREAD)
+    val EURUSD_1M = new Rate(0.0013, 0.0017)
+    val AUDUSD_1M = new Rate(0.0023, 0.0029)
 
-    println("EURUSD=" + EURUSD)
-    println("AUDUSD=" + AUDUSD.prettyPrint)
-    println("EURAUD with spread widened by " + EXTRA_SPREAD + "=" + roundedEURAUD.prettyPrint)
+    def calculateOutright(spot: Rate, points: Rate) = new Rate(spot.getBid + points.getBid, spot.getOffer + points.getOffer)
+    val AUDUSD_OUTRIGHT_1M = calculateOutright(AUDUSD_SPOT,AUDUSD_1M)
+    val EURUSD_OUTRIGHT_1M = calculateOutright(EURUSD_SPOT,EURUSD_1M)
+
+    val EURAUD_SPOT = EURUSD_SPOT.cross(AUDUSD_SPOT)
+
+    val EURAUD_OUTRIGHT_1M = EURUSD_OUTRIGHT_1M.cross(AUDUSD_OUTRIGHT_1M)
+    val EURAUD_POINTS = new Rate(EURAUD_OUTRIGHT_1M.getBid-EURAUD_SPOT.getBid, EURAUD_OUTRIGHT_1M.getOffer-EURAUD_SPOT.getOffer)
+    val extraSpread=0.00049
+    val spreadWidenedEURAUD = new SpreadedRate(EURAUD_POINTS.calculateMid,EURAUD_POINTS.spread + extraSpread)
+    val roundedEURAUD: Rate = spreadWidenedEURAUD.round(5)
+
+    println("EURUSD=" + EURUSD_SPOT)
+    println("AUDUSD=" + AUDUSD_SPOT.prettyPrint)
+    println("EURAUD points with spread widened by " + extraSpread + "=" + roundedEURAUD.prettyPrint)
     assert(EXPECTED_BID==roundedEURAUD.getBid.getResult)
     assert(EXPECTED_OFFER==roundedEURAUD.getOffer.getResult)
     /*
