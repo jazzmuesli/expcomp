@@ -57,6 +57,25 @@ class NumericExpression(result:Double,
 case class Number(n: Double) extends NumericExpression(n)
 
 class Rate(left: NumericExpression, right: NumericExpression) {
+  def generateCRWithTabs(n: Int) = Range(0,n).foldLeft("\n")((x, y) => x+"\t")
+
+  // TODO: pretty print the actual AST instead of making toString pretty
+  def prettyPrint: String = {
+    val str = toString
+    var level = 0
+    var sb = new StringBuilder
+    for (char <- str.toCharArray) {
+      if (char == '(') {
+        level += 1
+        sb.append(generateCRWithTabs(level))
+      } else if (char == ')') {
+        level -= 1
+      }
+      sb.append(char)
+    }
+    sb.toString()
+  }
+
   def calculateMid = (left+right)*0.5
   def getBid = left
   def getOffer = right

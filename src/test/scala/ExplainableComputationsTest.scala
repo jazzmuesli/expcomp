@@ -28,10 +28,11 @@ roundedPie=(5.86=(5.859874482048838=3.141592653589793 + 2.718281828459045) round
     val AUDUSD = new SpreadedRate(0.7843, 0.002)
     println("AUDUSD=" + AUDUSD)
     val EURAUD = EURUSD.cross(AUDUSD)
-    val roundedEURAUD: Rate = EURAUD.round(4)
-    println("EURAUD=" + roundedEURAUD)
-    assert(1.5705==roundedEURAUD.getBid.getResult)
-    assert(1.5751==roundedEURAUD.getOffer.getResult)
+    val spreadWidenedEURAUD = new SpreadedRate(EURAUD.calculateMid,EURAUD.spread + 0.2)
+    val roundedEURAUD: Rate = spreadWidenedEURAUD.round(4)
+    println("EURAUD=" + roundedEURAUD.prettyPrint)
+    assert(1.4705==roundedEURAUD.getBid.getResult)
+    assert(1.6751==roundedEURAUD.getOffer.getResult)
     /*
 EURUSD=Rate(bid=1.2333, offer=1.2338)
 AUDUSD=Rate(bid=(0.7833=0.7843 - (0.001=0.002 * 0.5)), offer=(0.7853=0.7843 + (0.001=0.002 * 0.5)))=SpreadedRate(mid=0.7843, spread=0.002)
@@ -68,6 +69,7 @@ EURAUD=Rate(bid=(1.5705=(1.5704826181077296=1.2333 / (0.7853=0.7843 + (0.001=0.0
     val AUDUSD_OFFER=AUDUSD_MID+AUDUSD_SPREAD*0.5
     val EURAUD_BID=EURUSD_BID/AUDUSD_OFFER
     val EURAUD_OFFER=EURUSD_OFFER/AUDUSD_BID
+    
     val EURAUD_BID_ROUNDED=rounder4dp(EURAUD_BID)
     val EURAUD_OFFER_ROUNDED=rounder4dp(EURAUD_OFFER)
     assert(1.5705==EURAUD_BID_ROUNDED)
