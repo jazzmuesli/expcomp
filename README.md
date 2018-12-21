@@ -124,3 +124,5 @@ EURAUD points with spread widened by 4.9E-4=Rate
 ## Disadvantages
 
 As you can see in ExplainableComputationsTest::testPerformance, this approach is 15-60x slower than raw arithmetic operations on doubles.
+
+[![Build Status](https://travis-ci.org/jazzmuesli/expcomp.svg?branch=master)](https://travis-ci.org/jazzmuesli/expcomp)

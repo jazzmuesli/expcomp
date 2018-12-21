@@ -45,7 +45,7 @@ roundedPie=(5.86=(5.859874482048838=3.141592653589793 + 2.718281828459045) round
 
     val EURAUD_OUTRIGHT_1M = EURUSD_OUTRIGHT_1M.cross(AUDUSD_OUTRIGHT_1M)
     val EURAUD_POINTS = new Rate(EURAUD_OUTRIGHT_1M.getBid-EURAUD_SPOT.getBid, EURAUD_OUTRIGHT_1M.getOffer-EURAUD_SPOT.getOffer)
-    val extraSpread=0.00049
+    val extraSpread=Number(0.00049)*1.34 // 34% panic
     val spreadWidenedEURAUD = new SpreadedRate(EURAUD_POINTS.calculateMid,EURAUD_POINTS.spread + extraSpread)
     val roundedEURAUD: Rate = spreadWidenedEURAUD.round(5)
 
