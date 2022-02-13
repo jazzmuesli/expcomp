@@ -1,3 +1,5 @@
+import org.junit.Assert
+import org.junit.Ignore
 import ComplexImplicits._
 import org.junit.Test
 
@@ -54,8 +56,8 @@ roundedPie=(5.86=(5.859874482048838=3.141592653589793 + 2.718281828459045) round
     println("EURUSD_1M=" + EURUSD_1M.prettyPrint)
     println("AUDUSD_1M=" + AUDUSD_1M.prettyPrint)
     println("EURAUD points with spread widened by " + extraSpread + "=" + roundedEURAUD.prettyPrint)
-    assert(-0.00437==roundedEURAUD.getBid.getResult)
-    assert(-0.0022==roundedEURAUD.getOffer.getResult)
+    Assert.assertEquals(-0.00446, roundedEURAUD.getBid.getResult, 1e-5)
+    Assert.assertEquals(-0.00212, roundedEURAUD.getOffer.getResult, 1e-5)
   }
 
   def perform(explain: Boolean, f: => Unit): Long = {
